@@ -95,7 +95,7 @@ int main(int, char**)
         }
 
         // Start the Dear ImGui frame
-        ImGui_ImplDX9_NewFrame();
+        ImGui_ImplDX12_NewFrame();
         ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();
 
@@ -123,7 +123,7 @@ int main(int, char**)
             ResetDevice();
     }
 
-    ImGui_ImplDX9_Shutdown();
+    ImGui_ImplDX12_Shutdown();
     ImGui_ImplWin32_Shutdown();
     ImGui::DestroyContext();
 

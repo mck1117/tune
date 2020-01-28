@@ -1,0 +1,5 @@
+
+add_library(main_windows_common STATIC)
+target_include_directories(main_windows_common PUBLIC .)
+target_sources(main_windows_common PRIVATE imgui_impl_win32.cpp)
+target_link_libraries(main_windows_common imgui)
