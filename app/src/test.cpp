@@ -30,9 +30,12 @@ RootState& GetRootState()
     return state;
 }
 
-void SetChannelAction(IDispatcher&, RootState& state, float value)
+Action SetChannelAction(float value)
 {
-    state.channel->SetValue(value);
+	return [=](IDispatcher&, RootState& state)
+	{
+		state.channel->SetValue(value);
+	};
 }
 
 std::unique_ptr<Component> myWindow(const std::string& title, const RootState& st)
@@ -45,7 +48,7 @@ std::unique_ptr<Component> myWindow(const std::string& title, const RootState& s
         st.channel->GetValue(),
         [] (float val)
         {
-            return ab<float>(SetChannelAction, val);
+			return SetChannelAction(val);
         }, st.channel->GetBoundsAsFloat().Min, st.channel->GetBoundsAsFloat().Max
     ));
 
