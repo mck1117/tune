@@ -12,6 +12,25 @@ public:
     {
         m_thread = std::thread([this]() { Run(); });
     }
+
+	~ThreadDispatcher()
+	{
+		Shutdown();
+	}
+
+	void Shutdown()
+	{
+		if (m_thread.joinable())
+		{
+			{
+				std::lock_guard<std::mutex> lock(m_mutex);
+				m_exiting = true;
+			}
+
+			m_actionRequired.notify_one();
+			m_thread.join();
+		}
+	}
     
     void Dispatch(Callback&& func) override
     {
@@ -37,6 +56,11 @@ private:
                 // Wait for signal
                 m_actionRequired.wait(lock);
                 
+				if (m_exiting)
+				{
+					return;
+				}
+
                 tempQueue = std::move(m_queue);
             }
             
@@ -57,6 +81,8 @@ private:
     std::condition_variable m_actionRequired;
     
     std::list<Callback> m_queue;
+
+	bool m_exiting = false;
 };
 
 std::shared_ptr<IDispatcher> GetDispatcherInstance()
