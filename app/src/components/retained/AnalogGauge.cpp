@@ -9,10 +9,10 @@ class GaugeAnalog : public Component
 {
 public:
     GaugeAnalog(const std::shared_ptr<const ecu::OutputChannelBase>& channel)
-        : m_channel(std::move(channel))
-        , m_scale(2 * 3.14159 /
+        : m_channel(channel)
+        , m_scale(2 * 3.14159f /
                   (m_channel->GetBoundsAsFloat().Max - m_channel->GetBoundsAsFloat().Min))
-        , m_add(3.14159)
+        , m_add(3.14159f)
     {
         
     }
