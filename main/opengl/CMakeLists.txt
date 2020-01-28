@@ -1,0 +1,4 @@
+add_library(imgui_opengl STATIC)
+target_include_directories(imgui_opengl PUBLIC .)
+target_sources(imgui_opengl PRIVATE imgui_impl_opengl2.cpp)
+target_link_libraries(imgui_opengl imgui)
