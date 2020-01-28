@@ -1,6 +1,7 @@
 #include <ecu/OutputChannel.h>
 #include <vector>
 #include <algorithm>
+#include <memory>
 
 namespace ecu
 {
