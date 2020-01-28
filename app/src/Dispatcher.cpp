@@ -61,6 +61,7 @@ private:
 					return;
 				}
 
+				// Grab a local copy of the queue so more enqueues can happen while we process these
                 tempQueue = std::move(m_queue);
             }
             
