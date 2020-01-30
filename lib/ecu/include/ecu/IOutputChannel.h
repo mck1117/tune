@@ -16,7 +16,9 @@ struct ChannelBounds
 };
 
 struct IOutputChannel
-{
+{  
+    virtual ~IOutputChannel() = default;
+
 	virtual float GetValueAsFloat() const = 0;
 	virtual ChannelBounds<float> GetBoundsAsFloat() const = 0;
 

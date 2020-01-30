@@ -11,6 +11,8 @@ struct IWindowManager
 	virtual RootState& GetState() = 0;
 	virtual void Render() = 0;
 	virtual void NeedsRender() = 0;
+
+	virtual ~IWindowManager() = 0;
 };
 
 IWindowManager* GetWindowManager();
