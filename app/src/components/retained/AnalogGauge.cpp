@@ -3,12 +3,12 @@
 #include <imgui.h>
 #include <ui/imgui_ext.h>
 
-#include <ecu/OutputChannel.h>
+#include <ecu/IOutputChannel.h>
 
 class GaugeAnalog : public Component
 {
 public:
-    GaugeAnalog(const std::shared_ptr<const ecu::OutputChannelBase>& channel)
+    GaugeAnalog(const std::shared_ptr<const ecu::IOutputChannel>& channel)
         : m_channel(channel)
         , m_scale(2 * 3.14159f /
                   (m_channel->GetBoundsAsFloat().Max - m_channel->GetBoundsAsFloat().Min))
@@ -25,7 +25,7 @@ protected:
     }
     
 private:
-    const std::shared_ptr<const ecu::OutputChannelBase> m_channel;
+    const std::shared_ptr<const ecu::IOutputChannel> m_channel;
     
     const float m_scale, m_add;
     
@@ -34,7 +34,7 @@ private:
 
 namespace c
 {
-std::unique_ptr<Component> gauge(const std::shared_ptr<const ecu::OutputChannelBase>& channel)
+std::unique_ptr<Component> gauge(const std::shared_ptr<const ecu::IOutputChannel>& channel)
 {
     return std::make_unique<GaugeAnalog>(channel);
 }

@@ -6,4 +6,6 @@ target_sources(ecu
     PRIVATE
         src/Ecu.cpp
         src/OutputChannelParser.cpp
+        src/OutputChannel.h
+        src/OutputChannel.cpp
     )

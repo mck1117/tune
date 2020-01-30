@@ -17,7 +17,7 @@ struct Component
 using ComponentList = std::vector<std::unique_ptr<Component>>;
 
 // Fwd declares for stuff used below
-namespace ecu { struct OutputChannelBase; }
+namespace ecu { struct IOutputChannel; }
 
 namespace c
 {
@@ -25,8 +25,8 @@ std::unique_ptr<Component> sp(const std::string& name, ComponentList&& children,
 std::unique_ptr<Component> btn(const std::string& t, Callback cb);
 std::unique_ptr<Component> tb(const std::string& t);
 std::unique_ptr<Component> w(const std::string& title, std::unique_ptr<Component>&& child);
-std::unique_ptr<Component> gauge(const std::shared_ptr<const ecu::OutputChannelBase>& channel);
+std::unique_ptr<Component> gauge(const std::shared_ptr<const ecu::IOutputChannel>& channel);
 std::unique_ptr<Component> slider(const std::string& label, float value, std::function<Action(float)>&& moved, float min, float max);
-std::unique_ptr<Component> chtext(const std::shared_ptr<const ecu::OutputChannelBase>& channel);
+std::unique_ptr<Component> chtext(const std::shared_ptr<const ecu::IOutputChannel>& channel);
 std::unique_ptr<Component> ti(std::function<Action(const std::string&)>&& changed);
 }

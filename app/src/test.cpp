@@ -17,7 +17,7 @@
 #include <ui/Dispatcher.h>
 #include <ui/Component.h>
 
-#include <ecu/OutputChannel.h>
+#include <ecu/IOutputChannel.h>
 
 using namespace ecu;
 
@@ -79,7 +79,7 @@ std::unique_ptr<Component> myWindow(const RootState& st)
 		children.push_back(c::gauge(st.channel));
 		children.push_back(c::slider(
 			"Test slider",
-			st.channel->GetValue(),
+			st.channel->GetValueAsFloat(),
 			[](float val)
 			{
 				return SetChannelAction(val);

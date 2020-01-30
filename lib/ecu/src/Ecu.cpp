@@ -1,7 +1,7 @@
 
 #include <ecu/Ecu.h>
 
-#include <ecu/OutputChannel.h>
+#include "OutputChannel.h"
 
 #include <map>
 
@@ -21,13 +21,13 @@ public:
 		m_floatOutputChannels.insert({"tps", std::make_shared<ecu::FloatOutputChannel>("rpm", "TPS", ecu::ChannelBounds<float>({ 0, 100 }))});
 	}
 
-    std::shared_ptr<FloatOutputChannel> FindChannel(const std::string& id) const override;
+    std::shared_ptr<IOutputChannel> FindChannel(const std::string& id) const override;
 
 private:
-    std::map<std::string, std::shared_ptr<FloatOutputChannel>> m_floatOutputChannels;
+    std::map<std::string, std::shared_ptr<IOutputChannel>> m_floatOutputChannels;
 };
 
-std::shared_ptr<FloatOutputChannel> Ecu::FindChannel(const std::string& id) const
+std::shared_ptr<IOutputChannel> Ecu::FindChannel(const std::string& id) const
 {
     auto it = m_floatOutputChannels.find(id);
 

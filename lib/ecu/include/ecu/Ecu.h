@@ -3,6 +3,8 @@
 #include <memory>
 #include <string>
 
+#include <ecu/IOutputChannel.h>
+
 namespace ecu
 {
 
@@ -11,7 +13,7 @@ struct OutputChannelBase;
 
 struct IEcu
 {
-    virtual std::shared_ptr<ecu::FloatOutputChannel> FindChannel(const std::string& id) const = 0;
+    virtual std::shared_ptr<ecu::IOutputChannel> FindChannel(const std::string& id) const = 0;
 
 	static std::shared_ptr<IEcu> Make();
 
