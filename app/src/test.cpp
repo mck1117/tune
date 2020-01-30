@@ -94,10 +94,6 @@ std::unique_ptr<Component> myWindow(const RootState& st)
     return c::w("myWindow", c::sp("mainstack", std::move(children)));
 }
 
-RootState lastState{};
-
-std::unique_ptr<Component> p;
-
 void init()
 {
 	GetWindowManager()->AddWindow(
