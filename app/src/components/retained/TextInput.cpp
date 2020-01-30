@@ -9,6 +9,7 @@ public:
 		: m_bufferLength(bufferLength)
 		, m_changed(std::move(changed))
     {
+		// pre-reserve buffer space so we don't allocate twice (once on the copy, once on the resize)
 		m_buffer.reserve(bufferLength);
 		std::copy(text.begin(), text.end(), std::back_inserter(m_buffer));
 		m_buffer.resize(bufferLength);
