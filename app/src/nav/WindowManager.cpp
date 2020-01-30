@@ -25,8 +25,6 @@ public:
 
 	void Render() override
 	{
-		std::list<WindowEntry*> toRender;
-
 		if (!m_isRendered.test_and_set())
 		{
 			printf("rendered %d\n", ++m_renderCount);
