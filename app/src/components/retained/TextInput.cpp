@@ -9,6 +9,7 @@ public:
 		: m_bufferLength(bufferLength)
 		, m_changed(std::move(changed))
     {
+		m_buffer.reserve(bufferLength);
 		std::copy(text.begin(), text.end(), std::back_inserter(m_buffer));
 		m_buffer.resize(bufferLength);
     }
@@ -18,6 +19,7 @@ protected:
     {
 		if (ImGui::InputText("test", m_buffer.data(), m_buffer.size()))
 		{
+			// If the input changed, convert back to a string, and dispatch
 			std::string newString(m_buffer.data());
 
 			auto changed = m_changed;
