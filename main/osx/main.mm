@@ -10,8 +10,7 @@
 #import <OpenGL/glu.h>
 
 #include <functional>
-
-void render();
+#include <app/App.h>
 
 //-----------------------------------------------------------------------------------
 // ImGuiExampleView
@@ -51,7 +50,7 @@ void render();
 
     static ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
     
-    render();
+    app::render();
     
 	// Rendering
 	ImGui::Render();
@@ -199,6 +198,8 @@ void render();
 
     if ([view openGLContext] == nil)
         NSLog(@"No OpenGL Context!");
+
+    app::init();
 
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();

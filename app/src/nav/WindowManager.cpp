@@ -1,8 +1,7 @@
 
-#include <ui/WindowManager.h>
-#include <ui/RootState.h>
-#include <ui/Dispatcher.h>
-#include <ui/RootState.h>
+#include "WindowManager.h"
+#include "state/RootState.h"
+#include "dispatcher/Dispatcher.h"
 #include <atomic>
 
 #include <mutex>
@@ -60,7 +59,7 @@ private:
 
 	RootState m_state;
 
-	std::atomic_flag m_isRendered;
+	std::atomic_flag m_isRendered{};
 	int m_renderCount = 0;
 	
 	std::shared_ptr<IDispatcher> m_dispatcher = GetDispatcherInstance();

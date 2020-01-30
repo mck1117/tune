@@ -6,7 +6,7 @@ target_sources(main_osx PRIVATE
     imgui_impl_osx.mm
     )
 
-target_link_libraries(main_osx imgui_opengl)
+target_link_libraries(main_osx app imgui_opengl)
 
 # OpenGL and Cocoa - both required for OSX
 target_link_libraries(main_osx "-framework OpenGL")

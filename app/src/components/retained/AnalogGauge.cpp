@@ -1,7 +1,7 @@
-#include <ui/Component.h>
+#include "components/Component.h"
 
 #include <imgui.h>
-#include <ui/imgui_ext.h>
+#include "components/immediate/imgui_ext.h"
 
 #include <ecu/IOutputChannel.h>
 

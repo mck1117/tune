@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ui/Dispatcher.h>
+#include "dispatcher/Dispatcher.h"
 
 #include <memory>
 #include <vector>

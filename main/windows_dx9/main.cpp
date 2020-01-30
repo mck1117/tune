@@ -8,6 +8,7 @@
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
 #include <tchar.h>
+#include <app/App.h>
 
 // Data
 static LPDIRECT3D9              g_pD3D = NULL;
@@ -19,8 +20,6 @@ bool CreateDeviceD3D(HWND hWnd);
 void CleanupDeviceD3D();
 void ResetDevice();
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-
-void render();
 
 // Main code
 int main(int, char**)
@@ -37,6 +36,9 @@ int main(int, char**)
         ::UnregisterClass(wc.lpszClassName, wc.hInstance);
         return 1;
     }
+
+    // Set up the app
+    app::init();
 
     // Show the window
     ::ShowWindow(hwnd, SW_SHOWDEFAULT);
@@ -99,9 +101,7 @@ int main(int, char**)
         ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();
 
-		render();
-
-		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		app::render();
 
         // Rendering
         ImGui::EndFrame();

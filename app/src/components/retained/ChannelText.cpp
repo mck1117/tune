@@ -1,4 +1,4 @@
-#include <ui/Component.h>
+#include "components/Component.h"
 #include <ecu/IOutputChannel.h>
 
 #include <imgui.h>

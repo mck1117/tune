@@ -4,11 +4,14 @@ add_library (app STATIC)
 
 target_include_directories(app
     PRIVATE
-    include
+        src
+    PUBLIC
+        include
     )
 
 target_sources(app
     PRIVATE
+        src/components/Component.h
         src/components/retained/AnalogGauge.cpp
         src/components/retained/Button.cpp
         src/components/retained/ChannelText.cpp
@@ -18,11 +21,17 @@ target_sources(app
         src/components/retained/TextInput.cpp
         src/components/retained/Window.cpp
 
+        src/components/immediate/imgui_ext.h
         src/components/immediate/RoundGauge.cpp
 
+        src/dispatcher/Dispatcher.h
+        src/dispatcher/Dispatcher.cpp
+
+        src/nav/WindowManager.h
         src/nav/WindowManager.cpp
 
-        src/Dispatcher.cpp
+        src/state/RootState.h
+        src/state/RootState.cpp
 
 src/test.cpp)
 

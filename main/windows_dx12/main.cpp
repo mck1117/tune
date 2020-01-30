@@ -8,6 +8,7 @@
 #include <d3d12.h>
 #include <dxgi1_4.h>
 #include <tchar.h>
+#include <app/App.h>
 
 //#define DX12_ENABLE_DEBUG_LAYER
 
@@ -51,8 +52,6 @@ FrameContext* WaitForNextFrameResources();
 void ResizeSwapChain(HWND hWnd, int width, int height);
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-void render();
-
 // Main code
 int main(int, char**)
 {
@@ -68,6 +67,8 @@ int main(int, char**)
         ::UnregisterClass(wc.lpszClassName, wc.hInstance);
         return 1;
     }
+
+    app::init();
 
     // Show the window
     ::ShowWindow(hwnd, SW_SHOWDEFAULT);
@@ -133,8 +134,7 @@ int main(int, char**)
         ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();
 
-		render();
-		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		app::render();
 
         // Rendering
         FrameContext* frameCtxt = WaitForNextFrameResources();

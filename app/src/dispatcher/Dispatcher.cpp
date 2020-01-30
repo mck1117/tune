@@ -1,4 +1,4 @@
-#include <ui/Dispatcher.h>
+#include "Dispatcher.h"
 
 #include <memory>
 #include <mutex>

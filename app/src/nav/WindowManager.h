@@ -1,7 +1,7 @@
 #pragma once
 
 #include <functional>
-#include <ui/Component.h>
+#include "components/Component.h"
 
 struct RootState;
 

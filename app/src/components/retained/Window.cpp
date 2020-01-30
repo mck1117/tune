@@ -1,4 +1,4 @@
-#include <ui/Component.h>
+#include "components/Component.h"
 
 #include <imgui.h>
 

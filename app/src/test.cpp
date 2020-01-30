@@ -6,16 +6,15 @@
 
 #include <imgui.h>
 #include <imgui_internal.h>
-#include <ui/imgui_ext.h>
 
-#include <ui/WindowManager.h>
+#include "nav/WindowManager.h"
 
 #include <algorithm>
 
-#include <ui/RootState.h>
+#include "state/RootState.h"
 
-#include <ui/Dispatcher.h>
-#include <ui/Component.h>
+#include "dispatcher/Dispatcher.h"
+#include "components/Component.h"
 
 #include <ecu/IOutputChannel.h>
 
@@ -94,25 +93,25 @@ std::unique_ptr<Component> myWindow(const RootState& st)
     return c::w("myWindow", c::sp("mainstack", std::move(children)));
 }
 
-void init()
+namespace app
 {
-	GetWindowManager()->AddWindow(
-		[](const RootState& state)
-		{
-			return myWindow(state);
-		}
-		);
-}
-
-void render()
-{
-	static bool hasInit = false;
-
-	if (!hasInit)
+	void init()
 	{
-		hasInit = true;
-		init();
+		GetWindowManager()->GetState() = GetInitialState();
+
+		GetWindowManager()->AddWindow(
+			[](const RootState& state)
+			{
+				return myWindow(state);
+			}
+		);
 	}
 
-	GetWindowManager()->Render();
+	void render()
+	{
+		GetWindowManager()->Render();
+
+		// Extra debugging GUI
+		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+	}
 }

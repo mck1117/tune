@@ -6,6 +6,8 @@
 struct RootState
 {
 	std::string searchString;
-	std::shared_ptr <ecu::IEcu> ecu = ecu::IEcu::Make();
+	std::shared_ptr<ecu::IEcu> ecu;
 	std::shared_ptr<ecu::IOutputChannel> channel;
 };
+
+RootState GetInitialState();
