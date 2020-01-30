@@ -26,9 +26,9 @@ void RoundGauge(float needleAngle, float size)
 
     float needleRadius = radius - 10;
 
-    window->DrawList->AddCircle(center, radius, circleColor, 50, 10.0f);
+    window->DrawList->AddCircle(center, radius, circleColor, 64, 2.0f);
 
-    ImVec2 needletip = ImVec2(-sinf(needleAngle), cosf(needleAngle));
+    ImVec2 needletip = ImVec2(cosf(needleAngle), -sinf(needleAngle));
     needletip = needletip * needleRadius + center;
 
     window->DrawList->AddLine(center, needletip, needleColor, 4.0f);

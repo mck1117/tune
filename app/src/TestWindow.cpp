@@ -22,17 +22,26 @@ Action SetChannelAction(float value)
 	};
 }
 
-Action FindPressed()
+Action SetGaugeMin(float value)
 {
-	return [=](IDispatcher&, RootState& state)
-	{
-		return;
+    printf("SetGaugeMin %f\n", value);
+    
+    return [=](IDispatcher&, RootState& state)
+    {
+        state.gaugeMin = value;
+        GetWindowManager()->NeedsRender();
+    };
+}
 
-		printf("FindPressed %s\n", state.searchString.c_str());
-
-		state.channel = state.ecu->FindChannel(state.searchString);
-		GetWindowManager()->NeedsRender();
-	};
+Action SetGaugeMax(float value)
+{
+    printf("SetGaugeMin %f\n", value);
+    
+    return [=](IDispatcher&, RootState& state)
+    {
+        state.gaugeMax = value;
+        GetWindowManager()->NeedsRender();
+    };
 }
 
 Action SearchStringChanged(const std::string& str)
@@ -58,7 +67,6 @@ std::unique_ptr<Component> myWindow(const RootState& st)
 	ComponentList upper;
 	upper.push_back(c::tb("Look for:"));
 	upper.push_back(c::ti(st.searchString, [](const std::string& str) { return SearchStringChanged(str); }));
-	upper.push_back(c::btn("Find", []() { return FindPressed(); }));
 
     ComponentList children;
 	children.push_back(c::sp("upper", std::move(upper)));
@@ -66,15 +74,32 @@ std::unique_ptr<Component> myWindow(const RootState& st)
 	if (st.channel)
 	{
 		children.push_back(c::chtext(st.channel));
-		children.push_back(c::gauge(st.channel));
+		children.push_back(c::gauge(st.channel, st.gaugeMin, st.gaugeMax));
 		children.push_back(c::slider(
-			"Test slider",
+			"Channel value",
 			st.channel->GetValueAsFloat(),
 			[](float val)
 			{
 				return SetChannelAction(val);
 			}, st.channel->GetBoundsAsFloat().Min, st.channel->GetBoundsAsFloat().Max
-				));
+        ));
+        
+        children.push_back(c::slider(
+            "Gauge min",
+            st.gaugeMin,
+            [](float val)
+            {
+                return SetGaugeMin(val);
+            }, -360, 360
+        ));
+        children.push_back(c::slider(
+            "Gauge max",
+            st.gaugeMax,
+            [](float val)
+            {
+                return SetGaugeMax(val);
+            }, -360, 360
+        ));
 	}
 	else
 	{
