@@ -6,8 +6,7 @@ class TextInput final : public Component
 {
 public:
 	TextInput(const std::string& text, std::function<Action(const std::string&)>&& changed, size_t bufferLength = 256)
-		: m_bufferLength(bufferLength)
-		, m_changed(std::move(changed))
+		: m_changed(std::move(changed))
     {
 		// pre-reserve buffer space so we don't allocate twice (once on the copy, once on the resize)
 		m_buffer.reserve(bufferLength);
@@ -29,7 +28,6 @@ protected:
     }
 
 private:
-	const size_t m_bufferLength;
 	mutable std::vector<char> m_buffer;
 
     std::function<Action(const std::string&)> m_changed;
