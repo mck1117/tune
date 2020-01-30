@@ -12,15 +12,25 @@ public:
     GaugeAnalog(const std::shared_ptr<const ecu::IOutputChannel>& channel, float minAngle, float maxAngle)
         : m_channel(channel)
         , m_scale((maxAngle - minAngle) / (m_channel->GetBoundsAsFloat().Max - m_channel->GetBoundsAsFloat().Min))
-        , m_add(minAngle)
+        , m_add(minAngle - m_channel->GetBoundsAsFloat().Min * m_scale)
     {
+        size_t count = 11;
+        float step = (maxAngle - minAngle) / (count - 1);
+        
+        float x = minAngle;
+        
+        for (size_t i = 0; i < count; i++) {
+            m_ticks.push_back(x);
+            x += step;
+        }
     }
     
 protected:
     void Render(IDispatcher& dispatcher) const override
     {
         float angle = m_channel->GetValueAsFloat() * m_scale + m_add;
-        ImGui::RoundGauge(angle, m_size);
+        
+        ImGui::RoundGauge(angle, m_size, m_ticks);
     }
     
 private:
@@ -29,6 +39,8 @@ private:
     const float m_scale, m_add;
     
     const float m_size = 250;
+    
+    std::vector<float> m_ticks;
 };
 
 namespace c

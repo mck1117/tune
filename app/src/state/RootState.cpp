@@ -6,8 +6,8 @@ RootState GetInitialState()
 
     s.ecu = ecu::IEcu::Make();
     
-    s.gaugeMin = 135;
-    s.gaugeMax = -45;
+    s.gaugeMin = -225;
+    s.gaugeMax = 45;
 
     return s;
 }
