@@ -1,5 +1,4 @@
-add_library(main STATIC)
-
+add_executable(main)
 target_sources(main PRIVATE dummy.cpp)
 
 if (WIN32)

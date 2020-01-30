@@ -14,7 +14,3 @@ add_subdirectory(app)
 add_subdirectory(main)
 add_subdirectory(lib/ecu)
 add_subdirectory(lib/imgui)
-
-add_executable(exe)
-target_sources(exe PRIVATE dummy.cpp)
-target_link_libraries(exe main app)
