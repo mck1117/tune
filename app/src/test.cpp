@@ -67,7 +67,7 @@ std::unique_ptr<Component> myWindow(const RootState& st)
 {
 	ComponentList upper;
 	upper.push_back(c::tb("Look for:"));
-	upper.push_back(c::ti([](const std::string& str) { return SearchStringChanged(str); }));
+	upper.push_back(c::ti(st.searchString, [](const std::string& str) { return SearchStringChanged(str); }));
 	upper.push_back(c::btn("Find", []() { return FindPressed(); }));
 
     ComponentList children;

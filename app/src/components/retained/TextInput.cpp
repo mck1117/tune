@@ -5,10 +5,11 @@
 class TextInput final : public Component
 {
 public:
-	TextInput(std::function<Action(const std::string&)>&& changed, size_t bufferLength = 256)
+	TextInput(const std::string& text, std::function<Action(const std::string&)>&& changed, size_t bufferLength = 256)
 		: m_bufferLength(bufferLength)
 		, m_changed(std::move(changed))
     {
+		std::copy(text.begin(), text.end(), std::back_inserter(m_buffer));
 		m_buffer.resize(bufferLength);
     }
 
@@ -34,8 +35,8 @@ private:
 
 namespace c
 {
-std::unique_ptr<Component> ti(std::function<Action(const std::string&)>&& changed)
+std::unique_ptr<Component> ti(const std::string& text, std::function<Action(const std::string&)>&& changed)
 {
-    return std::make_unique<TextInput>(std::move(changed));
+    return std::make_unique<TextInput>(text, std::move(changed));
 }
 }
