@@ -12,7 +12,7 @@ struct IWindowManager
 	virtual void Render() = 0;
 	virtual void NeedsRender() = 0;
 
-	virtual ~IWindowManager() = 0;
+	virtual ~IWindowManager() = default;
 };
 
 IWindowManager* GetWindowManager();
