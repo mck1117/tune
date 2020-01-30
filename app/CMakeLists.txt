@@ -33,7 +33,10 @@ target_sources(app
         src/state/RootState.h
         src/state/RootState.cpp
 
-src/test.cpp)
+        src/TestWindow.cpp
+
+        src/App.cpp
+    )
 
 # Group by folder tree when generating a project for an IDE
 get_target_property(APP_STATIC_SOURCES app SOURCES)
