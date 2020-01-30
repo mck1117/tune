@@ -15,9 +15,12 @@ target_sources(app
         src/components/retained/Slider.cpp
         src/components/retained/StackPanel.cpp
         src/components/retained/TextBlock.cpp
+        src/components/retained/TextInput.cpp
         src/components/retained/Window.cpp
 
         src/components/immediate/RoundGauge.cpp
+
+        src/nav/WindowManager.cpp
 
         src/Dispatcher.cpp
 
