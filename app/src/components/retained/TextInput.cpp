@@ -2,31 +2,22 @@
 
 #include <imgui.h>
 
-
 class TextInput final : public Component
 {
 public:
-    TextInput(std::function<Action(const std::string&)>&& changed)
-        : m_changed(std::move(changed))
+	TextInput(std::function<Action(const std::string&)>&& changed, size_t bufferLength = 256)
+		: m_bufferLength(bufferLength)
+		, m_changed(std::move(changed))
     {
+		m_buffer.resize(bufferLength);
     }
 
 protected:
     void Render(IDispatcher& dispatcher) const override
     {
-		// todo: this is probably very wrong
-
-		std::vector<char> str(m_string.begin(), m_string.end());
-		str.push_back(0);
-		str.reserve(128);
-
-		ImGui::InputText("test", str.data(), 128);
-
-		std::string newString = std::string(str.data());
-
-		if (newString != m_string)
+		if (ImGui::InputText("test", m_buffer.data(), m_buffer.size()))
 		{
-			m_string = newString;
+			std::string newString(m_buffer.data());
 
 			auto changed = m_changed;
 			dispatcher.Dispatch([changed, newString]() { return changed(newString); });
@@ -34,7 +25,9 @@ protected:
     }
 
 private:
-    mutable std::string m_string;
+	const size_t m_bufferLength;
+	mutable std::vector<char> m_buffer;
+
     std::function<Action(const std::string&)> m_changed;
 };
 
