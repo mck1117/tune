@@ -45,6 +45,11 @@ public:
         return m_buffer[idx];
     }
 
+	size_t Size() const
+	{
+		return m_size;
+	}
+
 private:
     TBuffer* m_buffer;
     size_t m_size;
