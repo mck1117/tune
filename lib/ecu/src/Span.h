@@ -45,7 +45,7 @@ public:
         return m_buffer[idx];
     }
 
-	size_t Size() const
+	size_t size() const
 	{
 		return m_size;
 	}

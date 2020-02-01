@@ -1,31 +1,18 @@
-
-#include <ecu/Ecu.h>
-
-#include "OutputChannel.h"
-
-#include <map>
+#include <Ecu.h>
 
 namespace ecu
 {
 
-class Ecu final : public IEcu
+Ecu::Ecu(std::unique_ptr<IEcuInterface>&& iface)
+	: m_interface(std::move(iface))
 {
-public:
-	Ecu()
-	{
-		// temporary for testing!
-		m_floatOutputChannels.insert({"rpm", std::make_shared<ecu::FloatOutputChannel>("rpm", "RPM", ecu::ChannelBounds<float>({ 0, 8000 }))});
-		m_floatOutputChannels.insert({"iat", std::make_shared<ecu::FloatOutputChannel>("rpm", "IAT", ecu::ChannelBounds<float>({ -20, 80 }))});
-		m_floatOutputChannels.insert({"clt", std::make_shared<ecu::FloatOutputChannel>("rpm", "CLT", ecu::ChannelBounds<float>({ -20, 120  }))});
-		m_floatOutputChannels.insert({"map", std::make_shared<ecu::FloatOutputChannel>("rpm", "MAP", ecu::ChannelBounds<float>({ 0, 250 }))});
-		m_floatOutputChannels.insert({"tps", std::make_shared<ecu::FloatOutputChannel>("rpm", "TPS", ecu::ChannelBounds<float>({ 0, 100 }))});
-	}
-
-    std::shared_ptr<IOutputChannel> FindChannel(const std::string& id) const override;
-
-private:
-    std::map<std::string, std::shared_ptr<IOutputChannel>> m_floatOutputChannels;
-};
+	// temporary for testing!
+	m_floatOutputChannels.insert({"rpm", std::make_shared<ecu::FloatOutputChannel>("rpm", "RPM", ecu::ChannelBounds<float>({ 0, 8000 }))});
+	m_floatOutputChannels.insert({"iat", std::make_shared<ecu::FloatOutputChannel>("rpm", "IAT", ecu::ChannelBounds<float>({ -20, 80 }))});
+	m_floatOutputChannels.insert({"clt", std::make_shared<ecu::FloatOutputChannel>("rpm", "CLT", ecu::ChannelBounds<float>({ -20, 120  }))});
+	m_floatOutputChannels.insert({"map", std::make_shared<ecu::FloatOutputChannel>("rpm", "MAP", ecu::ChannelBounds<float>({ 0, 250 }))});
+	m_floatOutputChannels.insert({"tps", std::make_shared<ecu::FloatOutputChannel>("rpm", "TPS", ecu::ChannelBounds<float>({ 0, 100 }))});
+}
 
 std::shared_ptr<IOutputChannel> Ecu::FindChannel(const std::string& id) const
 {
@@ -37,11 +24,6 @@ std::shared_ptr<IOutputChannel> Ecu::FindChannel(const std::string& id) const
     }
 
     return nullptr;
-}
-
-std::shared_ptr<IEcu> IEcu::Make()
-{
-	return std::make_shared<Ecu>();
 }
 
 } // namespace ecu
