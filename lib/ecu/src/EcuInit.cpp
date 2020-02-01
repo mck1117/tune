@@ -12,11 +12,8 @@ std::shared_ptr<IEcu> IEcu::MakeTunerstudioEcu(const std::string& serialPort, ui
 	auto port = ISerialPort::Make(serialPort, baudRate);
 
 	port->Open();
-
-	// TODO: why doesn't this compile?
-	//std::unique_ptr<IEcuTransport> ts = std::make_unique<TunerstudioEcuInterface>(port);
-	//return std::make_shared<Ecu>(std::move(ts));
-
-	return std::make_shared<Ecu>(nullptr);
+    
+    auto ts = std::make_unique<TunerstudioEcuInterface>(std::move(port));
+	return std::make_shared<Ecu>(std::move(ts));
 }
 }
