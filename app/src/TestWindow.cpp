@@ -62,6 +62,25 @@ Action SearchStringChanged(const std::string& str)
 	};
 }
 
+Action SerialPortChanged(const std::string& str)
+{
+	printf("SerialPortChanged %s\n", str.c_str());
+
+	return [=](IDispatcher&, RootState& state)
+	{
+		state.serialPort = str;
+	};
+}
+
+Action ConnectPressed()
+{
+	return [](IDispatcher&, RootState& state)
+	{
+		state.ecu = IEcu::MakeTunerstudioEcu(state.serialPort, 115200);
+		GetWindowManager()->NeedsRender();
+	};
+};
+
 std::unique_ptr<Component> myWindow(const RootState& st)
 {
 	ComponentList upper;
@@ -107,4 +126,14 @@ std::unique_ptr<Component> myWindow(const RootState& st)
 	}
 
     return c::w("myWindow", c::sp("mainstack", std::move(children)));
+}
+
+std::unique_ptr<Component> ecuWindow(const RootState& st)
+{
+	ComponentList view;
+
+	view.push_back(c::ti(st.serialPort, [](const std::string& str) { return SerialPortChanged(str); }));
+	view.push_back(c::btn("Connect", []() { return ConnectPressed(); }));
+
+	return c::w("Ecu Connection", c::sp("ms", std::move(view)));
 }

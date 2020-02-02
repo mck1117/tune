@@ -6,6 +6,8 @@
 #include <memory>
 
 std::unique_ptr<Component> myWindow(const RootState& st);
+std::unique_ptr<Component> ecuWindow(const RootState& st);
+
 
 namespace app
 {
@@ -17,6 +19,13 @@ namespace app
 			[](const RootState& state)
 			{
 				return myWindow(state);
+			}
+		);
+
+		GetWindowManager()->AddWindow(
+			[](const RootState& state)
+			{
+				return ecuWindow(state);
 			}
 		);
 	}
