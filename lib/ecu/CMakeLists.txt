@@ -13,8 +13,9 @@ target_sources(ecu
         src/Ecu.cpp
         src/EcuInit.cpp
 
-        src/channels/OutputChannelParser.cpp
         src/channels/OutputChannel.h
+        src/channels/OutputChannelParser.h
+        src/channels/OutputChannelParser.cpp
 
         src/interface/EcuInterface.h
         src/interface/TunerstudioProtocol.h
