@@ -1,5 +1,6 @@
 #pragma once
 
+#include <map>
 #include <memory>
 #include <string>
 
@@ -19,5 +20,7 @@ struct IEcu
 
 	virtual ~IEcu() = default;
 };
+
+std::map<std::string, std::shared_ptr<IOutputChannel>> GetDemoChannels();
 
 } // namespace ecu

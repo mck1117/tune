@@ -52,11 +52,11 @@ Action SearchStringChanged(const std::string& str)
 	{
 		state.searchString = str;
 
-		auto ch = state.ecu->FindChannel(str);
-
-		if (ch)
+		auto it = state.demochannels.find(str);
+		if (it != state.demochannels.end())
 		{
-			state.channel = std::move(ch);
+			state.channel = it->second;
+
 			GetWindowManager()->NeedsRender();
 		}
 	};
