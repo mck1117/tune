@@ -4,6 +4,7 @@
 #include "channels/OutputChannel.h"
 
 #include <map>
+#include <thread>
 
 namespace ecu
 {
@@ -14,10 +15,16 @@ public:
 
 	std::shared_ptr<IOutputChannel> FindChannel(const std::string& id) const override;
 
+	void Run();
+
 private:
-	void UpdateOutputChannels() override;
+	void Loop();
+	void UpdateOutputChannels();
+
+	std::thread m_updateThread;
 
 	std::unique_ptr<IEcuInterface> m_interface;
+	OutputChannelParser m_outputChannelParser;
 
 	std::map<std::string, std::shared_ptr<IOutputChannel>> m_floatOutputChannels;
 };

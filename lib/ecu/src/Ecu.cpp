@@ -12,6 +12,22 @@ Ecu::Ecu(std::unique_ptr<IEcuInterface>&& iface)
 	m_floatOutputChannels.insert({"clt", std::make_shared<ecu::FloatOutputChannel>("rpm", "CLT", ecu::ChannelBounds<float>({ -20, 120  }))});
 	m_floatOutputChannels.insert({"map", std::make_shared<ecu::FloatOutputChannel>("rpm", "MAP", ecu::ChannelBounds<float>({ 0, 250 }))});
 	m_floatOutputChannels.insert({"tps", std::make_shared<ecu::FloatOutputChannel>("rpm", "TPS", ecu::ChannelBounds<float>({ 0, 100 }))});
+
+	Run();
+}
+
+void Ecu::Run()
+{
+	m_updateThread = std::thread([this]() { Loop(); });
+}
+
+void Ecu::Loop()
+{
+	while (true)
+	{
+		UpdateOutputChannels();
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+	}
 }
 
 std::shared_ptr<IOutputChannel> Ecu::FindChannel(const std::string& id) const
