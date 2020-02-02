@@ -31,7 +31,7 @@ void OutputChannelParser::UpdateChannelsFromBuffer(const Span<uint8_t> readBuffe
         // end of buffer - not all channels read
         try
         {
-            channelBuf = readBuffer.Slice(channel.Offset, channel.Size);
+            channelBuf = readBuffer.Slice(channel.Offset);
         }
         catch (...)
         {

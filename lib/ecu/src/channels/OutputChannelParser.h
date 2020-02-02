@@ -11,7 +11,6 @@ struct OutputChannelBinaryConfiguration
 {
     std::shared_ptr<OutputChannelBase> Channel;
     size_t Offset;
-    size_t Size;
 };
 
 class OutputChannelParser
