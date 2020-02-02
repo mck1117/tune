@@ -26,4 +26,9 @@ std::shared_ptr<IOutputChannel> Ecu::FindChannel(const std::string& id) const
     return nullptr;
 }
 
+void Ecu::UpdateOutputChannels()
+{
+	auto och = m_interface->GetOutputChannelBuffer();
+}
+
 } // namespace ecu

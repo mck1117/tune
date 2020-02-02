@@ -15,6 +15,8 @@ public:
 	std::shared_ptr<IOutputChannel> FindChannel(const std::string& id) const override;
 
 private:
+	void UpdateOutputChannels() override;
+
 	std::unique_ptr<IEcuInterface> m_interface;
 
 	std::map<std::string, std::shared_ptr<IOutputChannel>> m_floatOutputChannels;
