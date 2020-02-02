@@ -21,7 +21,12 @@ target_sources(ecu
         src/interface/TunerstudioProtocol.cpp
         src/interface/TunerstudioTransport.cpp
 
-        src/pal/windows/WindowsSerialPort.cpp
-
         src/Span.h
     )
+
+# PAL components
+if (WIN32)
+    target_sources(ecu PRIVATE src/pal/windows/WindowsSerialPort.cpp)
+elseif (APPLE)
+    target_sources(ecu PRIVATE src/pal/mac/MacSerialPort.cpp)
+endif()
