@@ -93,7 +93,7 @@ public:
 private:
 	void SetValueUnscaled(float unscaled)
 	{
-		SetValue(unscaled * m_scale + m_add);
+		SetValue(unscaled / m_scale + m_add);
 	}
 	
 	const float m_scale;
