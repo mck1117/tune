@@ -12,7 +12,7 @@ public:
     Span(uint8_t* buffer, size_t size) noexcept : m_buffer(buffer), m_size(size) { }
     
     // Take a slice of the buffer, starting at the specified index.
-    Span Slice(size_t firstIndex)
+    Span Slice(size_t firstIndex) const
     {
         ASSERT(m_buffer);
         ASSERT(firstIndex < m_size);
@@ -21,7 +21,7 @@ public:
     }
 
     // Take a slice of the buffer, starting at the specified index, with the specified size.
-    Span Slice(size_t firstIndex, size_t size)
+    Span Slice(size_t firstIndex, size_t size) const
     {
         ASSERT(m_buffer);
         ASSERT(firstIndex + size < m_size);
@@ -53,5 +53,4 @@ public:
 private:
     TBuffer* m_buffer;
     size_t m_size;
-
 };

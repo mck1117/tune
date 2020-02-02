@@ -2,6 +2,7 @@
 
 #include "interface/EcuInterface.h"
 #include "channels/OutputChannel.h"
+#include "channels/OutputChannelParser.h"
 
 #include <map>
 #include <thread>
@@ -20,6 +21,8 @@ public:
 private:
 	void Loop();
 	void UpdateOutputChannels();
+
+	std::vector<OutputChannelBinaryConfiguration> BuildChannels();
 
 	std::thread m_updateThread;
 

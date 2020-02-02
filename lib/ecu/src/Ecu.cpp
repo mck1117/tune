@@ -5,6 +5,7 @@ namespace ecu
 
 Ecu::Ecu(std::unique_ptr<IEcuInterface>&& iface)
 	: m_interface(std::move(iface))
+	, m_outputChannelParser(BuildChannels())
 {
 	// temporary for testing!
 	m_floatOutputChannels.insert({"rpm", std::make_shared<ecu::FloatOutputChannel>("rpm", "RPM", ecu::ChannelBounds<float>({ 0, 8000 }))});
@@ -15,6 +16,14 @@ Ecu::Ecu(std::unique_ptr<IEcuInterface>&& iface)
 
 	Run();
 }
+
+
+std::vector<OutputChannelBinaryConfiguration> Ecu::BuildChannels()
+{
+	// todo: this should be passed in as a config, not generated in source
+	return {};
+}
+
 
 void Ecu::Run()
 {
@@ -45,6 +54,8 @@ std::shared_ptr<IOutputChannel> Ecu::FindChannel(const std::string& id) const
 void Ecu::UpdateOutputChannels()
 {
 	auto och = m_interface->GetOutputChannelBuffer();
+
+	m_outputChannelParser.UpdateChannelsFromBuffer(Span<uint8_t>(och.data(), och.size()));
 }
 
 } // namespace ecu
