@@ -23,10 +23,10 @@ private:
 };
 
 template <class TValue>
-class OutputChannel : public OutputChannelBase
+class ScalarOutputChannel : public OutputChannelBase
 {
 public:
-	OutputChannel(const std::string& id, const std::string& displayName, ChannelBounds<TValue> bounds)
+	ScalarOutputChannel(const std::string& id, const std::string& displayName, ChannelBounds<TValue> bounds)
 		: OutputChannelBase(displayName)
 		, Id(id)
 		, Bounds(bounds)
@@ -61,24 +61,45 @@ private:
 	std::atomic<TValue> m_value = 0;
 };
 
-class FloatOutputChannel final : public OutputChannel<float>
+template <class TStorage>
+class ScaledOutputChannel final : public ScalarOutputChannel<float>
 {
 public:
-	FloatOutputChannel(const std::string& id, const std::string& displayName, ChannelBounds<float> bounds)
-		: OutputChannel(id, displayName, bounds)
+	ScaledOutputChannel(const std::string& id, const std::string& displayName, ChannelBounds<float> bounds, float scale = 1.0f, float add = 1.0f)
+		: ScalarOutputChannel(id, displayName, bounds)
+		, m_scale(scale)
+		, m_add(add)
 	{
 	}
 
-	void PostBytes(Span<uint8_t> b)
+	void PostBytes(Span<uint8_t> b) override
 	{
-		uint32_t raw =
-			(b[0] << 24) |
-			(b[1] << 16) |
-			(b[2] << 8) |
-			(b[3] << 0);
+		if constexpr (std::is_same_v<TStorage, float>)
+		{
+			uint32_t raw =
+				(b[0] << 0) |
+				(b[1] << 8) |
+				(b[2] << 16) |
+				(b[3] << 24);
 
-
-		SetValue(*(float*)(&raw));
+			SetValueUnscaled(*(float*)(&raw));
+		}
+		else if constexpr (std::is_same_v<TStorage, uint16_t>)
+		{
+			SetValueUnscaled(b[1] << 8 | b[0]);
+		}
 	}
+
+private:
+	void SetValueUnscaled(float unscaled)
+	{
+		SetValue(unscaled * m_scale + m_add);
+	}
+	
+	const float m_scale;
+	const float m_add;
 };
+
+using FloatOutputChannel = ScaledOutputChannel<float>;
+
 }
