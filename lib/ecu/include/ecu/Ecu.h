@@ -4,13 +4,10 @@
 #include <memory>
 #include <string>
 
-#include <ecu/IOutputChannel.h>
-
 namespace ecu
 {
 
-class FloatOutputChannel;
-struct OutputChannelBase;
+struct IOutputChannel;
 
 struct IEcu
 {
