@@ -65,7 +65,7 @@ template <class TStorage>
 class ScaledOutputChannel final : public ScalarOutputChannel<float>
 {
 public:
-	ScaledOutputChannel(const std::string& id, const std::string& displayName, ChannelBounds<float> bounds, float scale = 1.0f, float add = 1.0f)
+	ScaledOutputChannel(const std::string& id, const std::string& displayName, ChannelBounds<float> bounds, float scale = 1.0f, float add = 0.0f)
 		: ScalarOutputChannel(id, displayName, bounds)
 		, m_scale(scale)
 		, m_add(add)
