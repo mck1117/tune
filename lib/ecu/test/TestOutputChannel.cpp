@@ -31,3 +31,37 @@ TEST(OutputChannel, FloatScaled)
 
 	EXPECT_EQ(ch.GetValue(), testValue / 25);
 }
+
+TEST(OutputChannel, Uint16)
+{
+	ScaledOutputChannel<uint16_t> ch("test", "Test Channel", { 0, 100 }, 1000, 0.0f);
+
+	uint16_t testValue = 12345;
+
+	ch.PostBytes(Pun(testValue));
+
+	EXPECT_FLOAT_EQ(ch.GetValue(), 12.345f);
+}
+
+TEST(OutputChannel, Int16Pos)
+{
+	ScaledOutputChannel<int16_t> ch("test", "Test Channel", { 0, 100 }, 1000, 0.0f);
+
+	int16_t testValue = 12345;
+
+	ch.PostBytes(Pun(testValue));
+
+	EXPECT_FLOAT_EQ(ch.GetValue(), 12.345f);
+}
+
+TEST(OutputChannel, Int16Neg)
+{
+	ScaledOutputChannel<int16_t> ch("test", "Test Channel", { 0, 100 }, 1000, 0.0f);
+
+	int16_t testValue = -12345;
+
+	ch.PostBytes(Pun(testValue));
+
+	EXPECT_FLOAT_EQ(ch.GetValue(), -12.345f);
+}
+

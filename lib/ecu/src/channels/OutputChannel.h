@@ -88,6 +88,11 @@ public:
 		{
 			SetValueUnscaled(b[1] << 8 | b[0]);
 		}
+		else if constexpr (std::is_same_v < TStorage, int16_t>)
+		{
+			int16_t val = b[1] << 8 | b[0];
+			SetValueUnscaled(val);
+		}
 	}
 
 private:
