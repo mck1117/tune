@@ -14,3 +14,6 @@ add_subdirectory(app)
 add_subdirectory(main)
 add_subdirectory(lib/ecu)
 add_subdirectory(lib/imgui)
+
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+add_subdirectory(lib/googletest)
