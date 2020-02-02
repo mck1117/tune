@@ -20,3 +20,14 @@ TEST(OutputChannel, FloatUnscaled)
 
 	EXPECT_EQ(ch.GetValue(), testValue);
 }
+
+TEST(OutputChannel, FloatScaled)
+{
+	ScaledOutputChannel<float> ch("test", "Test Channel", { 0, 100 }, 25, 0.0f);
+
+	float testValue = 123.45;
+
+	ch.PostBytes(Pun(testValue));
+
+	EXPECT_EQ(ch.GetValue(), testValue / 25);
+}
