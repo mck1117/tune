@@ -1,6 +1,11 @@
 #include "TunerstudioProtocol.h"
 #include "Span.h"
 
+#ifndef htonl
+#define htonl(x) _byteswap_ulong(x)
+#define ntohl(x) _byteswap_ulong(x)
+#endif
+
 static constexpr uint32_t crc32_tab[] = { 0x00000000, 0x77073096, 0xee0e612c, 0x990951ba,
 0x076dc419, 0x706af48f, 0xe963a535, 0x9e6495a3, 0x0edb8832, 0x79dcb8a4,
 0xe0d5e91e, 0x97d2d988, 0x09b64c2b, 0x7eb17cbd, 0xe7b82d07, 0x90bf1d91,
@@ -72,8 +77,8 @@ void TunerstudioProtocol::WriteCrcPacket(std::vector<uint8_t>& data)
 
 	m_port->Send(data.data(), data.size());
 	
-	// compute CRC of the data
-	uint32_t crc = _byteswap_ulong(crc32inc(sdata.Slice(2)));
+	// compute CRC of the data - network byte order is big endian
+	uint32_t crc = htonl(crc32inc(sdata.Slice(2)));
 
 	// send CRC
 	m_port->Send(reinterpret_cast<uint8_t*>(&crc), sizeof(crc));
@@ -108,7 +113,7 @@ std::vector<uint8_t> TunerstudioProtocol::ReadCrcPacket()
 	// This is the computed CRC
 	uint32_t calcCrc = crc32inc(responseNoCrc);
 	// This is the CRC in the message
-	uint32_t rxCrc = _byteswap_ulong(*reinterpret_cast<uint32_t*>(&responseCrc[0]));
+	uint32_t rxCrc = ntohl(*reinterpret_cast<uint32_t*>(&responseCrc[0]));
 
 	// They should match!
 	if (calcCrc != rxCrc)
