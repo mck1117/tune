@@ -15,6 +15,7 @@ class EcuBase : public IEcu
 {
 public:
     std::shared_ptr<IOutputChannel> FindChannel(const std::string& id) const override;
+	const std::map<std::string, std::shared_ptr<ecu::IOutputChannel>>& GetChannels() const override;
 
 protected:
 	virtual void UpdateOutputChannels() = 0;
