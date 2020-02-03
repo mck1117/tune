@@ -7,7 +7,10 @@ if (APPLE)
     target_link_libraries(imgui_opengl "-framework OpenGL")
 else ()
     find_package(OpenGL REQUIRED)
-    find_package(glfw3 3.3 REQUIRED)
-    target_include_directories(imgui_opengl PUBLIC OPENGL_INCLUDE_DIRS)
-    target_link_libraries(imgui_opengl glfw3 ${OPENGL_LIBRARIES})
+
+    find_package(PkgConfig REQUIRED)
+    pkg_search_module(GLFW REQUIRED glfw3)
+
+    target_include_directories(imgui_opengl PUBLIC ${OPENGL_INCLUDE_DIRS} ${GLFW_INCLUDE_DIRS})
+    target_link_libraries(imgui_opengl glfw3 ${OPENGL_LIBRARIES} ${GLFW_LIBRARIES})
 endif()
