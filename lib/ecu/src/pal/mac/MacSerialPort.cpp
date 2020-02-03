@@ -1,12 +1,12 @@
 #include "pal/include/SerialPort.h"
+#include "pal/unix/UnixSerialPortBase.h"
 
-#include <unistd.h>
 #include <fcntl.h>
 #include <termios.h>
 
 namespace ecu
 {
-class MacSerialPort : public ISerialPort
+class MacSerialPort : public UnixSerialPortBase
 {
 public:
 	MacSerialPort(const std::string& portName, uint32_t baudRate)
@@ -53,26 +53,12 @@ public:
 		m_port = fd;
 	}
 
-	size_t Read(uint8_t* buffer, size_t count) override;
-
-	size_t Send(const uint8_t* buffer, size_t count) override;
-
 private:
 	const std::string m_portName;
 	const uint32_t m_baudRate;
 
 	int m_port = 0;
 };
-
-size_t MacSerialPort::Read(uint8_t* buffer, size_t count)
-{
-    return read(m_port, buffer, count);
-}
-
-size_t MacSerialPort::Send(const uint8_t* buffer, size_t count)
-{
-    return write(m_port, buffer, count);
-}
 
 std::unique_ptr<ISerialPort> ISerialPort::Make(const std::string& portName, uint32_t baudRate)
 {
