@@ -26,9 +26,10 @@ private:
 
 	std::thread m_updateThread;
 
+	std::map<std::string, std::shared_ptr<IOutputChannel>> m_floatOutputChannels;
+
 	std::unique_ptr<IEcuInterface> m_interface;
 	OutputChannelParser m_outputChannelParser;
 
-	std::map<std::string, std::shared_ptr<IOutputChannel>> m_floatOutputChannels;
 };
 }
