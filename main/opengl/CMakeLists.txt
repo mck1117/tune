@@ -12,5 +12,5 @@ else ()
     pkg_search_module(GLFW REQUIRED glfw3)
 
     target_include_directories(imgui_opengl PUBLIC ${OPENGL_INCLUDE_DIRS} ${GLFW_INCLUDE_DIRS})
-    target_link_libraries(imgui_opengl glfw3 ${OPENGL_LIBRARIES} ${GLFW_LIBRARIES})
+    target_link_libraries(imgui_opengl ${OPENGL_LIBRARIES} ${GLFW_LIBRARIES})
 endif()
