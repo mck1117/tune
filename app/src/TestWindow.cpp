@@ -51,11 +51,10 @@ Action SearchStringChanged(const std::string& str)
 	return [=](IDispatcher&, RootState& state)
 	{
 		state.searchString = str;
-
-		auto it = state.demochannels.find(str);
-		if (it != state.demochannels.end())
-		{
-			state.channel = it->second;
+        
+        if (state.ecu)
+        {
+            state.channel = state.ecu->FindChannel(str);
 
 			GetWindowManager()->NeedsRender();
 		}
@@ -72,17 +71,46 @@ Action SerialPortChanged(const std::string& str)
 	};
 }
 
+std::unique_ptr<Component> myWindow(const RootState& st);
+
 Action ConnectPressed()
 {
 	return [](IDispatcher&, RootState& state)
 	{
 		state.ecu = IEcu::MakeTunerstudioEcu(state.serialPort, 115200);
+        
+        // show the main window now that we have an ECU
+        GetWindowManager()->AddWindow(myWindow);
 		GetWindowManager()->NeedsRender();
 	};
 };
 
+Action ConnectFakeEcu()
+{
+    return [](IDispatcher&, RootState& state)
+    {
+        state.ecu = IEcu::MakeSynthetic();
+        
+        // show the main window now that we have an ECU
+        GetWindowManager()->AddWindow(myWindow);
+        GetWindowManager()->NeedsRender();
+    };
+};
+
+Action DisconnectEcu()
+{
+    return [](IDispatcher&, RootState& state)
+    {
+        state.ecu = nullptr;
+        GetWindowManager()->NeedsRender();
+    };
+};
+
 std::unique_ptr<Component> myWindow(const RootState& st)
 {
+    // if no ECU, destroy this window
+    if (!st.ecu) return nullptr;
+
 	ComponentList upper;
 	upper.push_back(c::tb("Look for:"));
 	upper.push_back(c::ti(st.searchString, [](const std::string& str) { return SearchStringChanged(str); }));
@@ -132,8 +160,16 @@ std::unique_ptr<Component> ecuWindow(const RootState& st)
 {
 	ComponentList view;
 
-	view.push_back(c::ti(st.serialPort, [](const std::string& str) { return SerialPortChanged(str); }));
-	view.push_back(c::btn("Connect", []() { return ConnectPressed(); }));
+    if (st.ecu)
+    {
+        view.push_back(c::btn("Disconnect", []() { return DisconnectEcu(); }));
+    }
+    else
+    {
+        view.push_back(c::ti(st.serialPort, [](const std::string& str) { return SerialPortChanged(str); }));
+        view.push_back(c::btn("Connect", []() { return ConnectPressed(); }));
+        view.push_back(c::btn("Connect fake ECU", []() { return ConnectFakeEcu(); }));
+    }
 
 	return c::w("Ecu Connection", c::sp("ms", std::move(view)));
 }

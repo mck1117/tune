@@ -44,11 +44,6 @@ public:
 		return ChannelBounds<float>(Bounds.Min, Bounds.Max);
 	}
 
-	virtual void SetValue(TValue newValue) override
-	{
-		m_value.store(newValue);
-	}
-
 	const TValue GetValue() const
 	{
 		return m_value.load();
@@ -56,6 +51,12 @@ public:
 
 	const std::string Id;
 	const ChannelBounds<TValue> Bounds;
+
+protected:
+	void SetValue(TValue newValue) override
+	{
+		m_value.store(newValue);
+	}
 
 private:
 	std::atomic<TValue> m_value = 0;
