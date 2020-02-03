@@ -17,6 +17,7 @@ public:
     void PostBytes(Span<uint8_t>) override {}
 private:
     const float m_amplitude, m_center;
+    const float m_phaseStep;
     float m_phase = 0;
 };
 }
