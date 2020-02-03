@@ -14,16 +14,6 @@ using namespace ecu;
 
 std::unique_ptr<Component> allChannelsWindow(const RootState& st);
 
-Action SetChannelAction(float value)
-{
-	printf("SetChannelAction %f\n", value);
-
-	return [=](IDispatcher&, RootState& state)
-	{
-		state.channel->SetValue(value);
-	};
-}
-
 Action SetGaugeMin(float value)
 {
     printf("SetGaugeMin %f\n", value);
@@ -126,14 +116,6 @@ std::unique_ptr<Component> myWindow(const RootState& st)
 	{
 		children.push_back(c::chtext(st.channel));
 		children.push_back(c::gauge(st.channel, st.gaugeMin, st.gaugeMax));
-		children.push_back(c::slider(
-			"Channel value",
-			st.channel->GetValueAsFloat(),
-			[](float val)
-			{
-				return SetChannelAction(val);
-			}, st.channel->GetBoundsAsFloat().Min, st.channel->GetBoundsAsFloat().Max
-        ));
         
         children.push_back(c::slider(
             "Gauge min",
