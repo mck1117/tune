@@ -12,6 +12,9 @@ jobs:
         fetch-depth: 1
         submodules: recursive
 
+    - name: Install Deps
+      run: sudo apt-get install -y libgl-dev
+
     - name: Setup
       working-directory: .
       run: mkdir build
