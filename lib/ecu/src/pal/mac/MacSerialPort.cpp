@@ -15,14 +15,6 @@ public:
 	{
 	}
 
-	~MacSerialPort()
-	{
-        if (m_port)
-        {
-            close(m_port);
-        }
-	}
-
 	void Open() override
 	{
         int fd = open(m_portName.c_str(), O_RDWR | O_NOCTTY | O_NDELAY);
