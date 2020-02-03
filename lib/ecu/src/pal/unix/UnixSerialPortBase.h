@@ -21,7 +21,7 @@ public:
 
 	size_t Send(const uint8_t* buffer, size_t count) override;
 
-private:
+protected:
 	int m_port = 0;
 };
 

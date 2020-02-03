@@ -56,8 +56,6 @@ public:
 private:
 	const std::string m_portName;
 	const uint32_t m_baudRate;
-
-	int m_port = 0;
 };
 
 std::unique_ptr<ISerialPort> ISerialPort::Make(const std::string& portName, uint32_t baudRate)
