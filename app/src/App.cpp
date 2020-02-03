@@ -15,19 +15,8 @@ namespace app
 	{
 		GetWindowManager()->GetState() = GetInitialState();
 
-		GetWindowManager()->AddWindow(
-			[](const RootState& state)
-			{
-				return myWindow(state);
-			}
-		);
-
-		GetWindowManager()->AddWindow(
-			[](const RootState& state)
-			{
-				return ecuWindow(state);
-			}
-		);
+		GetWindowManager()->AddWindow(myWindow);
+		GetWindowManager()->AddWindow(ecuWindow);
 	}
 
 	void render()
