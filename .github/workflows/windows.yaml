@@ -12,6 +12,9 @@ jobs:
         fetch-depth: 1
         submodules: recursive
 
+    - name: Setup MSBuild.exe
+      uses: warrenbuckley/Setup-MSBuild@v1
+
     - name: Setup
       working-directory: .
       run: mkdir build
