@@ -1,7 +1,7 @@
 #include "TunerstudioProtocol.h"
 #include "Span.h"
 
-#ifndef htonl
+#ifdef WIN32
 #define htonl(x) _byteswap_ulong(x)
 #define ntohl(x) _byteswap_ulong(x)
 #endif
@@ -118,7 +118,7 @@ std::vector<uint8_t> TunerstudioProtocol::ReadCrcPacket()
 	// They should match!
 	if (calcCrc != rxCrc)
 	{
-		throw std::exception("TS crc mismatch");
+		throw "TS crc mismatch";
 	}
 
 	// we're done with the CRC - remove it from the end of the buffer
