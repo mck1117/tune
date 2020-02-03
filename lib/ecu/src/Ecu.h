@@ -1,3 +1,5 @@
+#pragma once
+
 #include <ecu/Ecu.h>
 
 #include "interface/EcuInterface.h"
