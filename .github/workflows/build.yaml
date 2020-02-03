@@ -1,10 +1,10 @@
-name: Tuner CI (Mac)
+name: Tuner CI (Linux)
 
 on: [push,pull_request]
 
 jobs:
   build:
-    runs-on: mac-latest
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v1
