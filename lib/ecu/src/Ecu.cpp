@@ -71,9 +71,9 @@ std::shared_ptr<IOutputChannel> EcuBase::FindChannel(const std::string& id) cons
     return nullptr;
 }
 
-const std::map<std::string, std::shared_ptr<ecu::IOutputChannel>>& Ecu::GetChannels() const
+const std::map<std::string, std::shared_ptr<ecu::IOutputChannel>>& EcuBase::GetChannels() const
 {
-	return m_floatOutputChannels;
+	return m_outputChannels;
 }
 
 void Ecu::UpdateOutputChannels()

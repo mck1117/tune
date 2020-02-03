@@ -42,7 +42,6 @@ protected:
 private:
 	std::vector<OutputChannelBinaryConfiguration> BuildChannels();
 
-
 	std::map<std::string, std::shared_ptr<IOutputChannel>> m_floatOutputChannels;
 
 	std::unique_ptr<IEcuInterface> m_interface;
