@@ -34,6 +34,8 @@ if (WIN32)
     target_sources(ecu PRIVATE pal/windows/WindowsSerialPort.cpp)
 elseif (APPLE)
     target_sources(ecu PRIVATE pal/mac/MacSerialPort.cpp)
+else()
+    target_sources(ecu PRIVATE pal/linux/LinuxSerialPort.cpp)
 endif()
 
 # Group by folder tree when generating a project for an IDE
