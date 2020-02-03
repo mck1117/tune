@@ -15,6 +15,7 @@ target_sources(app
         src/components/retained/AnalogGauge.cpp
         src/components/retained/Button.cpp
         src/components/retained/ChannelText.cpp
+        src/components/retained/Separator.cpp
         src/components/retained/Slider.cpp
         src/components/retained/StackPanel.cpp
         src/components/retained/TextBlock.cpp
