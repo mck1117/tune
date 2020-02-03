@@ -12,6 +12,8 @@
 
 using namespace ecu;
 
+std::unique_ptr<Component> allChannelsWindow(const RootState& st);
+
 Action SetChannelAction(float value)
 {
 	printf("SetChannelAction %f\n", value);
@@ -51,7 +53,7 @@ Action SearchStringChanged(const std::string& str)
 	return [=](IDispatcher&, RootState& state)
 	{
 		state.searchString = str;
-        
+
         if (state.ecu)
         {
             state.channel = state.ecu->FindChannel(str);
@@ -78,9 +80,10 @@ Action ConnectPressed()
 	return [](IDispatcher&, RootState& state)
 	{
 		state.ecu = IEcu::MakeTunerstudioEcu(state.serialPort, 115200);
-        
+
         // show the main window now that we have an ECU
         GetWindowManager()->AddWindow(myWindow);
+        GetWindowManager()->AddWindow(allChannelsWindow);
 		GetWindowManager()->NeedsRender();
 	};
 };
@@ -90,9 +93,10 @@ Action ConnectFakeEcu()
     return [](IDispatcher&, RootState& state)
     {
         state.ecu = IEcu::MakeSynthetic();
-        
+
         // show the main window now that we have an ECU
         GetWindowManager()->AddWindow(myWindow);
+        GetWindowManager()->AddWindow(allChannelsWindow);
         GetWindowManager()->NeedsRender();
     };
 };
@@ -172,4 +176,31 @@ std::unique_ptr<Component> ecuWindow(const RootState& st)
     }
 
 	return c::w("Ecu Connection", c::sp("ms", std::move(view)));
+}
+
+std::unique_ptr<Component> allChannelsWindow(const RootState& st)
+{
+	ComponentList rows;
+
+	if (!st.ecu)
+	{
+		return c::w("All channels", nullptr);
+	}
+
+	const auto& channels = st.ecu->GetChannels();
+
+	for (const auto& ch : channels)
+	{
+		ComponentList row;
+
+		const auto& name = ch.first;
+		
+		row.push_back(c::tb(name));
+		row.push_back(c::gauge(ch.second, -225, 45));
+		row.push_back(c::sep());
+
+		rows.push_back(c::sp(name, std::move(row)));
+	}
+
+	return c::w("All Channels", c::sp("rows", std::move(rows)));
 }
