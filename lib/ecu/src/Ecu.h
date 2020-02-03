@@ -9,22 +9,32 @@
 
 namespace ecu
 {
-class Ecu final : public IEcu
+class EcuBase : public IEcu
+{
+protected:
+	virtual void UpdateOutputChannels() = 0;
+
+	void Run();
+
+private:
+	void Loop();
+
+	std::thread m_updateThread;
+};
+
+class Ecu final : public EcuBase
 {
 public:
 	Ecu(std::unique_ptr<IEcuInterface>&& iface);
 
 	std::shared_ptr<IOutputChannel> FindChannel(const std::string& id) const override;
 
-	void Run();
+protected:
+	void UpdateOutputChannels() override;
 
 private:
-	void Loop();
-	void UpdateOutputChannels();
-
 	std::vector<OutputChannelBinaryConfiguration> BuildChannels();
 
-	std::thread m_updateThread;
 
 	std::unique_ptr<IEcuInterface> m_interface;
 	OutputChannelParser m_outputChannelParser;

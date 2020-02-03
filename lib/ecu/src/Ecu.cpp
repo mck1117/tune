@@ -25,12 +25,12 @@ std::vector<OutputChannelBinaryConfiguration> Ecu::BuildChannels()
 }
 
 
-void Ecu::Run()
+void EcuBase::Run()
 {
 	m_updateThread = std::thread([this]() { Loop(); });
 }
 
-void Ecu::Loop()
+void EcuBase::Loop()
 {
 	while (true)
 	{
