@@ -7,13 +7,6 @@ Ecu::Ecu(std::unique_ptr<IEcuInterface>&& iface)
 	: m_interface(std::move(iface))
 	, m_outputChannelParser(BuildChannels())
 {
-	// temporary for testing!
-	m_outputChannels.insert({"rpm", std::make_shared<ecu::FloatOutputChannel>("rpm", "RPM", ecu::ChannelBounds<float>({ 0, 8000 }))});
-	m_outputChannels.insert({"iat", std::make_shared<ecu::FloatOutputChannel>("rpm", "IAT", ecu::ChannelBounds<float>({ -20, 80 }))});
-	m_outputChannels.insert({"clt", std::make_shared<ecu::FloatOutputChannel>("rpm", "CLT", ecu::ChannelBounds<float>({ -20, 120  }))});
-	m_outputChannels.insert({"map", std::make_shared<ecu::FloatOutputChannel>("rpm", "MAP", ecu::ChannelBounds<float>({ 0, 250 }))});
-	m_outputChannels.insert({"tps", std::make_shared<ecu::FloatOutputChannel>("rpm", "TPS", ecu::ChannelBounds<float>({ 0, 100 }))});
-
 	Run();
 }
 
@@ -34,11 +27,11 @@ std::vector<OutputChannelBinaryConfiguration> Ecu::BuildChannels()
 	channels.push_back({ map, 30 });
 	channels.push_back({ tps, 20 });
 
-	m_floatOutputChannels.insert({ "rpm", rpm });
-	m_floatOutputChannels.insert({ "iat", iat });
-	m_floatOutputChannels.insert({ "clt", clt });
-	m_floatOutputChannels.insert({ "map", map });
-	m_floatOutputChannels.insert({ "tps", tps });
+	m_outputChannels.insert({ "rpm", rpm });
+	m_outputChannels.insert({ "iat", iat });
+	m_outputChannels.insert({ "clt", clt });
+	m_outputChannels.insert({ "map", map });
+	m_outputChannels.insert({ "tps", tps });
 
 	// todo: this should be passed in as a config, not generated in source
 	return channels;
