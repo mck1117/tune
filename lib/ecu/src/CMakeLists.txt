@@ -12,10 +12,14 @@ target_sources(ecu
         Ecu.h
         Ecu.cpp
         EcuInit.cpp
+        FakeEcu.h
+        FakeEcu.cpp
 
         channels/OutputChannel.h
         channels/OutputChannelParser.h
         channels/OutputChannelParser.cpp
+        channels/FakeOutputChannel.h
+        channels/FakeOutputChannel.cpp
 
         interface/EcuInterface.h
         interface/TunerstudioProtocol.h
