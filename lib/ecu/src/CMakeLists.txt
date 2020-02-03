@@ -12,10 +12,14 @@ target_sources(ecu
         Ecu.h
         Ecu.cpp
         EcuInit.cpp
+        FakeEcu.h
+        FakeEcu.cpp
 
         channels/OutputChannel.h
         channels/OutputChannelParser.h
         channels/OutputChannelParser.cpp
+        channels/FakeOutputChannel.h
+        channels/FakeOutputChannel.cpp
 
         interface/EcuInterface.h
         interface/TunerstudioProtocol.h
@@ -29,7 +33,9 @@ target_sources(ecu
 if (WIN32)
     target_sources(ecu PRIVATE pal/windows/WindowsSerialPort.cpp)
 elseif (APPLE)
-    target_sources(ecu PRIVATE pal/mac/MacSerialPort.cpp)
+    target_sources(ecu PRIVATE pal/mac/MacSerialPort.cpp pal/unix/UnixSerialPortBase.h)
+else()
+    target_sources(ecu PRIVATE pal/linux/LinuxSerialPort.cpp pal/unix/UnixSerialPortBase.h)
 endif()
 
 # Group by folder tree when generating a project for an IDE

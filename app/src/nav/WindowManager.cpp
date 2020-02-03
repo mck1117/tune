@@ -25,16 +25,30 @@ public:
 
 	void Render() override
 	{
+        // If we need to rerender windows, do so
 		if (!m_isRendered.test_and_set())
 		{
 			printf("rendered %d\n", ++m_renderCount);
 
-			for (auto& e : m_windows)
-			{
-				e.Current = e.Render(GetState());
-			}
+            auto it = m_windows.begin();
+            
+            while (it != m_windows.end())
+            {
+                it->Current = it->Render(GetState());
+				
+                // if null returned, delete this window
+                if (!it->Current)
+                {
+                    it = m_windows.erase(it);
+                }
+                else
+                {
+                    it++;
+                }
+            }
 		}
 
+        // Now draw all windows
 		for (const auto& e : m_windows)
 		{
 			e.Current->Render(*m_dispatcher);

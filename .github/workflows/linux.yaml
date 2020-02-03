@@ -1,0 +1,30 @@
+name: Tuner CI (Linux)
+
+on: [push,pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        submodules: recursive
+
+    - name: Install Deps
+      run: sudo apt-get update && sudo apt-get install -y libgl-dev libglfw3-dev
+
+    - name: Setup
+      working-directory: .
+      run: mkdir build
+
+    - name: Configure Cmake
+      working-directory: ./build/
+      run: cmake ..
+
+    - name: Compile
+      working-directory: ./build/
+      run: make
+      
+    - name: Run Tests
+      run: ./lib/ecu/test/ecu_tests

@@ -44,7 +44,7 @@ public:
 		return ChannelBounds<float>(Bounds.Min, Bounds.Max);
 	}
 
-	virtual void SetValue(TValue newValue)
+    void SetValue(TValue newValue) override
 	{
 		m_value.store(newValue);
 	}

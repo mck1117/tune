@@ -1,3 +1,5 @@
+#pragma once
+
 #include <ecu/Ecu.h>
 
 #include "interface/EcuInterface.h"
@@ -9,22 +11,36 @@
 
 namespace ecu
 {
-class Ecu final : public IEcu
+class EcuBase : public IEcu
+{
+public:
+    std::shared_ptr<IOutputChannel> FindChannel(const std::string& id) const override;
+
+protected:
+	virtual void UpdateOutputChannels() = 0;
+
+	void Run();
+
+	std::map<std::string, std::shared_ptr<IOutputChannel>> m_outputChannels;
+
+private:
+	void Loop();
+
+	std::thread m_updateThread;
+};
+
+class Ecu final : public EcuBase
 {
 public:
 	Ecu(std::unique_ptr<IEcuInterface>&& iface);
 
-	std::shared_ptr<IOutputChannel> FindChannel(const std::string& id) const override;
 
-	void Run();
+protected:
+	void UpdateOutputChannels() override;
 
 private:
-	void Loop();
-	void UpdateOutputChannels();
-
 	std::vector<OutputChannelBinaryConfiguration> BuildChannels();
 
-	std::thread m_updateThread;
 
 	std::map<std::string, std::shared_ptr<IOutputChannel>> m_floatOutputChannels;
 

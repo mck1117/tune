@@ -1,0 +1,31 @@
+name: Tuner CI (Windows)
+
+on: [push,pull_request]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        submodules: recursive
+
+    - name: Setup MSBuild.exe
+      uses: warrenbuckley/Setup-MSBuild@v1
+
+    - name: Setup
+      working-directory: .
+      run: mkdir build
+
+    - name: Configure Cmake
+      working-directory: ./build/
+      run: cmake ..
+
+    - name: Compile
+      working-directory: ./build/
+      run: MSBuild.exe imgui_tuner.sln
+
+    - name: Run Tests
+      working-directory: ./build/
+      run: ./lib/ecu/test/Debug/ecu_tests.exe

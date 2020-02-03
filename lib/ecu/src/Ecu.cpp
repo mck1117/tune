@@ -7,6 +7,13 @@ Ecu::Ecu(std::unique_ptr<IEcuInterface>&& iface)
 	: m_interface(std::move(iface))
 	, m_outputChannelParser(BuildChannels())
 {
+	// temporary for testing!
+	m_outputChannels.insert({"rpm", std::make_shared<ecu::FloatOutputChannel>("rpm", "RPM", ecu::ChannelBounds<float>({ 0, 8000 }))});
+	m_outputChannels.insert({"iat", std::make_shared<ecu::FloatOutputChannel>("rpm", "IAT", ecu::ChannelBounds<float>({ -20, 80 }))});
+	m_outputChannels.insert({"clt", std::make_shared<ecu::FloatOutputChannel>("rpm", "CLT", ecu::ChannelBounds<float>({ -20, 120  }))});
+	m_outputChannels.insert({"map", std::make_shared<ecu::FloatOutputChannel>("rpm", "MAP", ecu::ChannelBounds<float>({ 0, 250 }))});
+	m_outputChannels.insert({"tps", std::make_shared<ecu::FloatOutputChannel>("rpm", "TPS", ecu::ChannelBounds<float>({ 0, 100 }))});
+
 	Run();
 }
 
@@ -37,12 +44,13 @@ std::vector<OutputChannelBinaryConfiguration> Ecu::BuildChannels()
 	return channels;
 }
 
-void Ecu::Run()
+
+void EcuBase::Run()
 {
 	m_updateThread = std::thread([this]() { Loop(); });
 }
 
-void Ecu::Loop()
+void EcuBase::Loop()
 {
 	while (true)
 	{
@@ -51,11 +59,11 @@ void Ecu::Loop()
 	}
 }
 
-std::shared_ptr<IOutputChannel> Ecu::FindChannel(const std::string& id) const
+std::shared_ptr<IOutputChannel> EcuBase::FindChannel(const std::string& id) const
 {
-    auto it = m_floatOutputChannels.find(id);
+    auto it = m_outputChannels.find(id);
 
-    if (it != m_floatOutputChannels.end())
+    if (it != m_outputChannels.end())
     {
         return it->second;
     }

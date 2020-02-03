@@ -1,6 +1,7 @@
 #include <ecu/Ecu.h>
 
 #include "Ecu.h"
+#include "FakeEcu.h"
 
 #include "pal/include/SerialPort.h"
 #include "interface/TunerstudioProtocol.h"
@@ -15,5 +16,10 @@ std::shared_ptr<IEcu> IEcu::MakeTunerstudioEcu(const std::string& serialPort, ui
     
     auto ts = std::make_unique<TunerstudioEcuInterface>(std::move(port));
 	return std::make_shared<Ecu>(std::move(ts));
+}
+
+std::shared_ptr<IEcu> IEcu::MakeSynthetic()
+{
+    return std::make_shared<FakeEcu>();
 }
 }

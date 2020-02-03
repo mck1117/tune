@@ -1,15 +1,13 @@
 #include "pal/include/SerialPort.h"
 #include "pal/unix/UnixSerialPortBase.h"
 
-#include <fcntl.h>
-#include <termios.h>
-
 namespace ecu
 {
-class MacSerialPort : public UnixSerialPortBase
+/*
+class LinuxSerialPort : public UnixSerialPortBase
 {
 public:
-	MacSerialPort(const std::string& portName, uint32_t baudRate)
+	LinuxSerialPort(const std::string& portName, uint32_t baudRate)
 		: m_portName(portName)
 		, m_baudRate(baudRate)
 	{
@@ -49,9 +47,10 @@ private:
 	const std::string m_portName;
 	const uint32_t m_baudRate;
 };
+*/
 
 std::unique_ptr<ISerialPort> ISerialPort::Make(const std::string& portName, uint32_t baudRate)
 {
-	return std::make_unique<MacSerialPort>(portName, baudRate);
+	return {};
 }
-} // namespace ecu
+}
