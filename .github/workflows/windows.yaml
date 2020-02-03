@@ -27,5 +27,8 @@ jobs:
       working-directory: ./build/
       run: MSBuild.exe imgui_tuner.sln
       
+    - name: where art thou tests
+      run: tree /f
+
     - name: Run Tests
       run: ./lib/ecu/test/ecu_tests
