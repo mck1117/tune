@@ -1,5 +1,7 @@
 #include <memory>
 
+#include "windows/TestWindows.h"
+
 #include "nav/WindowManager.h"
 
 #include <algorithm>
@@ -72,8 +74,8 @@ Action ConnectPressed()
 		state.ecu = IEcu::MakeTunerstudioEcu(state.serialPort, 115200);
 
         // show the main window now that we have an ECU
-        GetWindowManager()->AddWindow(myWindow);
-        GetWindowManager()->AddWindow(allChannelsWindow);
+        GetWindowManager()->AddWindow(std::make_unique<SingleGaugeDemoWindow>());
+        GetWindowManager()->AddWindow(std::make_unique<GaugeListWindow>());
 		GetWindowManager()->NeedsRender();
 	};
 };
@@ -85,8 +87,8 @@ Action ConnectFakeEcu()
         state.ecu = IEcu::MakeSynthetic();
 
         // show the main window now that we have an ECU
-        GetWindowManager()->AddWindow(myWindow);
-        GetWindowManager()->AddWindow(allChannelsWindow);
+        GetWindowManager()->AddWindow(std::make_unique<SingleGaugeDemoWindow>());
+        GetWindowManager()->AddWindow(std::make_unique<GaugeListWindow>());
         GetWindowManager()->NeedsRender();
     };
 };
@@ -100,8 +102,15 @@ Action DisconnectEcu()
     };
 };
 
-std::unique_ptr<Component> myWindow(const RootState& st)
+SingleGaugeDemoWindow::SingleGaugeDemoWindow()
+    : Window("Single Gauge")
 {
+}
+
+std::unique_ptr<Component> SingleGaugeDemoWindow::BuildImpl()
+{
+    const RootState& st = GetRootState();
+
     // if no ECU, destroy this window
     if (!st.ecu) return nullptr;
 
@@ -139,11 +148,18 @@ std::unique_ptr<Component> myWindow(const RootState& st)
 		children.push_back(c::tb("Channel not found!"));
 	}
 
-    return c::w("myWindow", c::sp("mainstack", std::move(children)));
+    return c::sp("mainstack", std::move(children));
 }
 
-std::unique_ptr<Component> ecuWindow(const RootState& st)
+EcuWindow::EcuWindow()
+    : Window("Ecu Connection")
 {
+}
+
+std::unique_ptr<Component> EcuWindow::BuildImpl()
+{
+    const RootState& st = GetRootState();
+    
 	ComponentList view;
 
     if (st.ecu)
@@ -157,16 +173,23 @@ std::unique_ptr<Component> ecuWindow(const RootState& st)
         view.push_back(c::btn("Connect fake ECU", []() { return ConnectFakeEcu(); }));
     }
 
-	return c::w("Ecu Connection", c::sp("ms", std::move(view)));
+	return c::sp("ms", std::move(view));
 }
 
-std::unique_ptr<Component> allChannelsWindow(const RootState& st)
+GaugeListWindow::GaugeListWindow()
+    : Window("All Channels")
 {
+}
+
+std::unique_ptr<Component> GaugeListWindow::BuildImpl()
+{
+    const RootState& st = GetRootState();
+    
 	ComponentList rows;
 
 	if (!st.ecu)
 	{
-		return c::w("All channels", nullptr);
+        return nullptr;
 	}
 
 	const auto& channels = st.ecu->GetChannels();
@@ -184,5 +207,5 @@ std::unique_ptr<Component> allChannelsWindow(const RootState& st)
 		rows.push_back(c::sp(name, std::move(row)));
 	}
 
-	return c::w("All Channels", c::sp("rows", std::move(rows)));
+	return c::sp("rows", std::move(rows));
 }

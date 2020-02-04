@@ -1,26 +1,18 @@
 
 #include "WindowManager.h"
+#include "Window.h"
 #include "state/RootState.h"
 #include "dispatcher/Dispatcher.h"
 #include <atomic>
 
 #include <mutex>
 
-struct WindowEntry
-{
-	std::function<std::unique_ptr<Component>(const RootState&)> Render;
-
-	std::unique_ptr<Component> Current = nullptr;
-};
-
 class WindowManager final : public IWindowManager
 {
 public:
-	void AddWindow(std::function<std::unique_ptr<Component>(const RootState&)> render) override
+	void AddWindow(const std::shared_ptr<Window>& window) override
 	{
-		std::lock_guard<std::mutex> lock(m_mutex);
-
-		m_windows.push_back({ render, nullptr });
+		m_windows.push_back(window);
 	}
 
 	void Render() override
@@ -34,10 +26,12 @@ public:
             
             while (it != m_windows.end())
             {
-                it->Current = it->Render(GetState());
-				
-                // if null returned, delete this window
-                if (!it->Current)
+                auto window = *it;
+                
+                window->Build();
+                
+                // Remove from the list if deleted
+                if (window->IsDeleted())
                 {
                     it = m_windows.erase(it);
                 }
@@ -51,7 +45,7 @@ public:
         // Now draw all windows
 		for (const auto& e : m_windows)
 		{
-			e.Current->Render(*m_dispatcher);
+			e->Render(*m_dispatcher);
 		}
 	}
 
@@ -67,7 +61,7 @@ public:
 
 private:
 	std::mutex m_mutex;
-	std::vector<WindowEntry> m_windows;
+	std::vector<std::shared_ptr<Window>> m_windows;
 
 	RootState m_state;
 
