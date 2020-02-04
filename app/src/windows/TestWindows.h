@@ -2,20 +2,20 @@
 
 #include <memory>
 
-struct EcuWindow : public Window
+struct EcuWindow : public Window<RootState>
 {
-    EcuWindow();
-    std::unique_ptr<Component> BuildImpl() override;
+    EcuWindow(const RootState& state);
+    std::unique_ptr<Component> BuildImpl(const RootState&) override;
 };
 
-struct SingleGaugeDemoWindow : public Window
+struct SingleGaugeDemoWindow : public Window<RootState>
 {
-    SingleGaugeDemoWindow();
-    std::unique_ptr<Component> BuildImpl() override;
+    SingleGaugeDemoWindow(const RootState& state);
+    std::unique_ptr<Component> BuildImpl(const RootState&) override;
 };
 
-struct GaugeListWindow : public Window
+struct GaugeListWindow : public Window<RootState>
 {
-    GaugeListWindow();
-    std::unique_ptr<Component> BuildImpl() override;
+    GaugeListWindow(const RootState& state);
+    std::unique_ptr<Component> BuildImpl(const RootState&) override;
 };

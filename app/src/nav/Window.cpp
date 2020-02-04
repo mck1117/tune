@@ -4,9 +4,9 @@
 
 #include "components/Component.h"
 
-/*static*/ uintptr_t Window::s_nextId = 0;
+/*static*/ uintptr_t WindowBase::s_nextId = 0;
 
-void Window::Render(IDispatcher& dispatcher)
+void WindowBase::Render(IDispatcher& dispatcher)
 {
     if (!m_current)
     {
@@ -25,7 +25,7 @@ void Window::Render(IDispatcher& dispatcher)
     ImGui::PopID();
 }
 
-void Window::Build()
+void WindowBase::Build()
 {
     auto current = BuildImpl();
 

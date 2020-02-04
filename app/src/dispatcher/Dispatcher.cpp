@@ -9,7 +9,8 @@
 class ThreadDispatcher final : public IDispatcher
 {
 public:
-    ThreadDispatcher()
+    ThreadDispatcher(RootState& rootState)
+        : m_rootState(rootState)
     {
         m_thread = std::thread([this]() { Run(); });
     }
@@ -72,10 +73,12 @@ private:
                 tempQueue.pop_front();
                 
                 Action a = work();
-                a(*this, GetRootState());
+                a(*this, m_rootState);
             }
         }
     }
+    
+    RootState& m_rootState;
     
     std::thread m_thread;
     
@@ -87,7 +90,7 @@ private:
 	bool m_exiting = false;
 };
 
-std::shared_ptr<IDispatcher> GetDispatcherInstance()
+std::shared_ptr<IDispatcher> GetDispatcherInstance(RootState& state)
 {
-    return std::make_shared<ThreadDispatcher>();
+    return std::make_shared<ThreadDispatcher>(state);
 }

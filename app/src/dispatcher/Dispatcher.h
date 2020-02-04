@@ -5,7 +5,6 @@
 
 struct IDispatcher;
 struct RootState;
-RootState& GetRootState();
 
 // An action to be run on the dispatcher that can mutate state.
 using Action = std::function<void(IDispatcher&, RootState&)>;
@@ -18,4 +17,4 @@ struct IDispatcher
     virtual ~IDispatcher() = default;
 };
 
-std::shared_ptr<IDispatcher> GetDispatcherInstance();
+std::shared_ptr<IDispatcher> GetDispatcherInstance(RootState& rootState);

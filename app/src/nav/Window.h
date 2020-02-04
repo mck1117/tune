@@ -10,15 +10,15 @@
 struct IDispatcher;
 struct Component;
 
-class Window
+class WindowBase
 {
 public:
-    Window(const std::string& title) : m_title(title) { }
-    virtual ~Window() = default;
+    WindowBase(const std::string& title) : m_title(title) { }
+    virtual ~WindowBase() = default;
 
     bool IsDeleted() { return m_isDeleted; }
 
-    void Render(IDispatcher& dispatcher);
+    virtual void Render(IDispatcher& dispatcher);
     void Build();
 
 protected:
@@ -36,4 +36,25 @@ private:
 
     std::string m_title;
     std::unique_ptr<Component> m_current = nullptr;
+};
+
+template <class TState>
+class Window : public WindowBase
+{
+public:
+    Window(const std::string& title, const TState& state)
+        : WindowBase(title)
+        , m_state(state)
+    {}
+
+protected:
+    virtual std::unique_ptr<Component> BuildImpl(const TState& state) = 0;
+
+    std::unique_ptr<Component> BuildImpl() final override
+    {
+        return BuildImpl(m_state);
+    }
+
+private:
+    const TState& m_state;
 };

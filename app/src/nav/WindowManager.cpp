@@ -10,7 +10,7 @@
 class WindowManager final : public IWindowManager
 {
 public:
-	void AddWindow(const std::shared_ptr<Window>& window) override
+	void AddWindow(const std::shared_ptr<WindowBase>& window) override
 	{
 		m_windows.push_back(window);
 	}
@@ -61,14 +61,14 @@ public:
 
 private:
 	std::mutex m_mutex;
-	std::vector<std::shared_ptr<Window>> m_windows;
+	std::vector<std::shared_ptr<WindowBase>> m_windows;
 
-	RootState m_state;
+	RootState m_state = GetInitialState();
 
 	std::atomic_flag m_isRendered{};
 	int m_renderCount = 0;
 	
-	std::shared_ptr<IDispatcher> m_dispatcher = GetDispatcherInstance();
+	std::shared_ptr<IDispatcher> m_dispatcher = GetDispatcherInstance(m_state);
 };
 
 static WindowManager s_instance;
@@ -76,9 +76,4 @@ static WindowManager s_instance;
 IWindowManager* GetWindowManager()
 {
 	return &s_instance;
-}
-
-RootState& GetRootState()
-{
-	return GetWindowManager()->GetState();
 }

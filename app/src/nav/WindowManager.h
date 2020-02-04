@@ -3,11 +3,11 @@
 #include <memory>
 
 struct RootState;
-class Window;
+class WindowBase;
 
 struct IWindowManager
 {
-    virtual void AddWindow(const std::shared_ptr<Window>& window) = 0;
+    virtual void AddWindow(const std::shared_ptr<WindowBase>& window) = 0;
 	virtual RootState& GetState() = 0;
 	virtual void Render() = 0;
 	virtual void NeedsRender() = 0;

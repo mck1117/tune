@@ -14,8 +14,6 @@
 
 using namespace ecu;
 
-std::unique_ptr<Component> allChannelsWindow(const RootState& st);
-
 Action SetGaugeMin(float value)
 {
     printf("SetGaugeMin %f\n", value);
@@ -65,8 +63,6 @@ Action SerialPortChanged(const std::string& str)
 	};
 }
 
-std::unique_ptr<Component> myWindow(const RootState& st);
-
 Action ConnectPressed()
 {
 	return [](IDispatcher&, RootState& state)
@@ -74,8 +70,8 @@ Action ConnectPressed()
 		state.ecu = IEcu::MakeTunerstudioEcu(state.serialPort, 115200);
 
         // show the main window now that we have an ECU
-        GetWindowManager()->AddWindow(std::make_unique<SingleGaugeDemoWindow>());
-        GetWindowManager()->AddWindow(std::make_unique<GaugeListWindow>());
+        GetWindowManager()->AddWindow(std::make_unique<SingleGaugeDemoWindow>(state));
+        GetWindowManager()->AddWindow(std::make_unique<GaugeListWindow>(state));
 		GetWindowManager()->NeedsRender();
 	};
 };
@@ -87,8 +83,8 @@ Action ConnectFakeEcu()
         state.ecu = IEcu::MakeSynthetic();
 
         // show the main window now that we have an ECU
-        GetWindowManager()->AddWindow(std::make_unique<SingleGaugeDemoWindow>());
-        GetWindowManager()->AddWindow(std::make_unique<GaugeListWindow>());
+        GetWindowManager()->AddWindow(std::make_unique<SingleGaugeDemoWindow>(state));
+        GetWindowManager()->AddWindow(std::make_unique<GaugeListWindow>(state));
         GetWindowManager()->NeedsRender();
     };
 };
@@ -102,15 +98,13 @@ Action DisconnectEcu()
     };
 };
 
-SingleGaugeDemoWindow::SingleGaugeDemoWindow()
-    : Window("Single Gauge")
+SingleGaugeDemoWindow::SingleGaugeDemoWindow(const RootState& state)
+    : Window("Single Gauge", state)
 {
 }
 
-std::unique_ptr<Component> SingleGaugeDemoWindow::BuildImpl()
+std::unique_ptr<Component> SingleGaugeDemoWindow::BuildImpl(const RootState& st)
 {
-    const RootState& st = GetRootState();
-
     // if no ECU, destroy this window
     if (!st.ecu) return nullptr;
 
@@ -151,15 +145,13 @@ std::unique_ptr<Component> SingleGaugeDemoWindow::BuildImpl()
     return c::sp("mainstack", std::move(children));
 }
 
-EcuWindow::EcuWindow()
-    : Window("Ecu Connection")
+EcuWindow::EcuWindow(const RootState& state)
+    : Window("Ecu Connection", state)
 {
 }
 
-std::unique_ptr<Component> EcuWindow::BuildImpl()
+std::unique_ptr<Component> EcuWindow::BuildImpl(const RootState& st)
 {
-    const RootState& st = GetRootState();
-    
 	ComponentList view;
 
     if (st.ecu)
@@ -176,15 +168,13 @@ std::unique_ptr<Component> EcuWindow::BuildImpl()
 	return c::sp("ms", std::move(view));
 }
 
-GaugeListWindow::GaugeListWindow()
-    : Window("All Channels")
+GaugeListWindow::GaugeListWindow(const RootState& state)
+    : Window("All Channels", state)
 {
 }
 
-std::unique_ptr<Component> GaugeListWindow::BuildImpl()
+std::unique_ptr<Component> GaugeListWindow::BuildImpl(const RootState& st)
 {
-    const RootState& st = GetRootState();
-    
 	ComponentList rows;
 
 	if (!st.ecu)

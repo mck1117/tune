@@ -14,9 +14,7 @@ namespace app
 {
 	void init()
 	{
-        GetWindowManager()->GetState() = GetInitialState();
-        
-		GetWindowManager()->AddWindow(std::make_shared<EcuWindow>());
+		GetWindowManager()->AddWindow(std::make_shared<EcuWindow>(GetWindowManager()->GetState()));
 	}
 
 	void render()
