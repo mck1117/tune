@@ -21,7 +21,7 @@ jobs:
 
     - name: Compile
       working-directory: ./build/
-      run: make
+      run: make -j4
       
     - name: Run Tests
       run: ./lib/ecu/test/ecu_tests

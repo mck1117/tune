@@ -24,7 +24,7 @@ jobs:
 
     - name: Compile
       working-directory: ./build/
-      run: make
+      run: make -j4
 
 # fix me!
 #    - name: Run Tests
