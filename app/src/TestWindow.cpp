@@ -110,7 +110,7 @@ std::unique_ptr<Component> SingleGaugeDemoWindow::BuildImpl(const RootState& st)
 
 	ComponentList upper;
 	upper.push_back(c::tb("Look for:"));
-	upper.push_back(c::ti(st.searchString, [](const std::string& str) { return SearchStringChanged(str); }));
+	upper.push_back(c::ti(st.searchString, SearchStringChanged));
 
     ComponentList children;
 	children.push_back(c::sp("upper", std::move(upper)));
@@ -123,18 +123,14 @@ std::unique_ptr<Component> SingleGaugeDemoWindow::BuildImpl(const RootState& st)
         children.push_back(c::slider(
             "Gauge min",
             st.gaugeMin,
-            [](float val)
-            {
-                return SetGaugeMin(val);
-            }, -360, 360
+            SetGaugeMin,
+            -360, 360
         ));
         children.push_back(c::slider(
             "Gauge max",
             st.gaugeMax,
-            [](float val)
-            {
-                return SetGaugeMax(val);
-            }, -360, 360
+            SetGaugeMax,
+            -360, 360
         ));
 	}
 	else
@@ -156,13 +152,13 @@ std::unique_ptr<Component> EcuWindow::BuildImpl(const RootState& st)
 
     if (st.ecu)
     {
-        view.push_back(c::btn("Disconnect", []() { return DisconnectEcu(); }));
+        view.push_back(c::btn("Disconnect", DisconnectEcu));
     }
     else
     {
-        view.push_back(c::ti(st.serialPort, [](const std::string& str) { return SerialPortChanged(str); }));
-        view.push_back(c::btn("Connect", []() { return ConnectPressed(); }));
-        view.push_back(c::btn("Connect fake ECU", []() { return ConnectFakeEcu(); }));
+        view.push_back(c::ti(st.serialPort, SerialPortChanged));
+        view.push_back(c::btn("Connect", ConnectPressed));
+        view.push_back(c::btn("Connect fake ECU", ConnectFakeEcu));
     }
 
 	return c::sp("ms", std::move(view));
