@@ -27,7 +27,7 @@ Action SetGaugeMin(float value)
 
 Action SetGaugeMax(float value)
 {
-    printf("SetGaugeMin %f\n", value);
+    printf("SetGaugeMax %f\n", value);
     
     return [=](IDispatcher&, RootState& state)
     {
@@ -126,6 +126,7 @@ std::unique_ptr<Component> SingleGaugeDemoWindow::BuildImpl(const RootState& st)
             SetGaugeMin,
             -360, 360
         ));
+
         children.push_back(c::slider(
             "Gauge max",
             st.gaugeMax,
