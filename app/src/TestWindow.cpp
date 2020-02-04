@@ -72,7 +72,6 @@ Action ConnectPressed()
         // show the main window now that we have an ECU
         GetWindowManager()->AddWindow(std::make_unique<SingleGaugeDemoWindow>(state));
         GetWindowManager()->AddWindow(std::make_unique<GaugeListWindow>(state));
-		GetWindowManager()->NeedsRender();
 	};
 };
 
@@ -85,7 +84,6 @@ Action ConnectFakeEcu()
         // show the main window now that we have an ECU
         GetWindowManager()->AddWindow(std::make_unique<SingleGaugeDemoWindow>(state));
         GetWindowManager()->AddWindow(std::make_unique<GaugeListWindow>(state));
-        GetWindowManager()->NeedsRender();
     };
 };
 

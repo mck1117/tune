@@ -13,6 +13,7 @@ public:
 	void AddWindow(const std::shared_ptr<WindowBase>& window) override
 	{
 		m_windows.push_back(window);
+		NeedsRender();
 	}
 
 	void Render() override
