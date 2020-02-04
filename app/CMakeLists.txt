@@ -20,7 +20,6 @@ target_sources(app
         src/components/retained/StackPanel.cpp
         src/components/retained/TextBlock.cpp
         src/components/retained/TextInput.cpp
-        src/components/retained/Window.cpp
 
         src/components/immediate/imgui_ext.h
         src/components/immediate/RoundGauge.cpp
@@ -30,10 +29,13 @@ target_sources(app
 
         src/nav/WindowManager.h
         src/nav/WindowManager.cpp
+        src/nav/Window.h
+        src/nav/Window.cpp
 
         src/state/RootState.h
         src/state/RootState.cpp
 
+        src/windows/TestWindows.h
         src/TestWindow.cpp
 
         src/App.cpp
